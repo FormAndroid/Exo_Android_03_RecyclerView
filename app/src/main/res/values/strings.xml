@@ -5,4 +5,7 @@
     <string name="hint_calory">Calorie (pour 100 gr)</string>
     <string name="btn_add">Ajouter</string>
     <string name="title_main_list">Liste des aliments</string>
+    <string name="choice_category_vegetable">Légume</string>
+    <string name="choice_category_meat">Viande</string>
+    <string name="choice_category_fruit">Fruit</string>
 </resources>
