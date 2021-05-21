@@ -1,0 +1,2 @@
+rootProject.name = "Exo_03_RecyclerView"
+include ':app'
