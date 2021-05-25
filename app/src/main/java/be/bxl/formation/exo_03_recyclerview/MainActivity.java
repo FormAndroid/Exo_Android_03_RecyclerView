@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         // Déactivation du bouton d'ajout
         btnAdd.setEnabled(false);
 
-        //
+        // Ajout d'evenement sur les EditTexts, pour activé le bouton d'ajout
         etName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -186,11 +186,14 @@ public class MainActivity extends AppCompatActivity {
         // Récuperation de l'InputMethod du clavier afficher
         InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
 
+        // Récuperation de la vue, si la vue n'est pas focus on en créer une.
+        // Elle sera utiliser pour obtenir le token de la Windows.
         View v = this.getCurrentFocus();
         if(v == null) {
             v = new View(this);
         }
 
+        // On demande au service qui gere le clavier de le fermé.
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 }
