@@ -8,4 +8,5 @@
     <string name="choice_category_vegetable">Légume</string>
     <string name="choice_category_meat">Viande</string>
     <string name="choice_category_fruit">Fruit</string>
+    <string name="unite_calory">kcal</string>
 </resources>

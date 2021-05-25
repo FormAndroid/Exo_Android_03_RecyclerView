@@ -2,6 +2,7 @@ package be.bxl.formation.exo_03_recyclerview;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.bxl.formation.exo_03_recyclerview.adapters.FoodAdpater;
 import be.bxl.formation.exo_03_recyclerview.models.Food;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private Spinner spCategory;
     private Button btnAdd;
     private RecyclerView rvFoods;
+
+    private FoodAdpater foodAdpater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +63,20 @@ public class MainActivity extends AppCompatActivity {
         // Ajouter le comportement du bouton
         btnAdd.setOnClickListener(this::addFood); // -> Utilisation d'un pointeur référence
 
-        // TODO Configurer le RecyclerView
-        // TODO Créer l'adapter customiser (Aliment avec la CardView)
+
+        // Création de l'adapter customiser (Aliment avec la CardView)
+        foodAdpater = new FoodAdpater(
+                getApplicationContext(),
+                foods
+        );
+
+        // Configurer le RecyclerView
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(
+                2, StaggeredGridLayoutManager.HORIZONTAL
+        );
+        rvFoods.setLayoutManager(layoutManager);
+
+        rvFoods.setAdapter(foodAdpater);
     }
 
     private void addFood(View v) {
@@ -78,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         );
 
         foods.add(0, food);
-        //TODO Signaler à Vue que la liste vien de changer !
+        foodAdpater.notifyDataSetChanged();
     }
 
     private Food.Category getSelectedFoodCategory() {
