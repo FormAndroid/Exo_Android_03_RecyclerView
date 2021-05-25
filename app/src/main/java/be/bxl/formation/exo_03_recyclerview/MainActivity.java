@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
         rvFoods.setLayoutManager(layoutManager);
 
         rvFoods.setAdapter(foodAdpater);
+        rvFoods.setHasFixedSize(true);
     }
 
     private void addFood(View v) {
@@ -186,6 +187,9 @@ public class MainActivity extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
 
         View v = this.getCurrentFocus();
+        if(v == null) {
+            v = new View(this);
+        }
 
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
