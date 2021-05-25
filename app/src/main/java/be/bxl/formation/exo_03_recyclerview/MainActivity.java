@@ -4,9 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,6 +48,43 @@ public class MainActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.btn_main_add_food);
         rvFoods = findViewById(R.id.rv_main_foods);
 
+        // Déactivation du bouton d'ajout
+        btnAdd.setEnabled(false);
+
+        //
+        etName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkFormFood();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        etCalory.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkFormFood();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         // Définition du Spinner
         List<String> categoryChoices = new ArrayList<>();
         categoryChoices.add(getString(R.string.choice_category_fruit));
@@ -80,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addFood(View v) {
-        String foodName   = etName.getText().toString();
+        String foodName   = etName.getText().toString().trim();
         String foodCalory = etCalory.getText().toString();
         Food.Category foodCatEnum = getSelectedFoodCategory();
 //        Log.d("DEBUG_FOOD", foodName);
@@ -93,8 +134,31 @@ public class MainActivity extends AppCompatActivity {
                 foodCatEnum
         );
 
+        resetFormFood();
+        hideKeyboard();
+
         foods.add(0, food);
         foodAdpater.notifyDataSetChanged();
+    }
+
+    private void resetFormFood() {
+        etName.setText("");
+        etCalory.setText("");
+        spCategory.setSelection(0);
+        btnAdd.setEnabled(false);
+    }
+
+    private void checkFormFood() {
+        // Verification sur la taille de la chaine de caractere
+        boolean nameOK = etName.getText().toString().trim().length() > 0;
+        boolean caloryOK = etCalory.getText().toString().length() > 0;
+
+        if(nameOK && caloryOK) {
+            btnAdd.setEnabled(true);
+        }
+        else {
+            btnAdd.setEnabled(false);
+        }
     }
 
     private Food.Category getSelectedFoodCategory() {
@@ -114,5 +178,15 @@ public class MainActivity extends AppCompatActivity {
             throw new RuntimeException("Category of food not supported !");
         }
         return foodCatEnum;
+    }
+
+
+    public void hideKeyboard() {
+        // Récuperation de l'InputMethod du clavier afficher
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+
+        View v = this.getCurrentFocus();
+
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 }
